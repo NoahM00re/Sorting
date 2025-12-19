@@ -1,0 +1,57 @@
+import requests
+import random
+
+# Student-developed function
+def get_random_facts(category, amount):
+    """
+    Gets a chosen number of random facts from an online API
+    based on the selected category.
+    """
+    url = "https://uselessfacts.jsph.pl/api/v2/facts/random"
+    facts = []  # List used to store facts
+
+    for i in range(amount):  # Iteration
+        response = requests.get(url)
+        data = response.json()
+
+        fact_text = data["text"]
+
+        # Selection (conditional)
+        if category == "short" and len(fact_text) <= 100:
+            facts.append(fact_text)
+        elif category == "long" and len(fact_text) > 100:
+            facts.append(fact_text)
+        elif category == "any":
+            facts.append(fact_text)
+
+    return facts
+
+
+def main():
+    print("=== Random Facts Generator ===")
+    print("Choose a category:")
+    print("1. Short facts")
+    print("2. Long facts")
+    print("3. Any facts")
+
+    choice = input("Enter 1, 2, or 3: ")
+
+    # Input affects output
+    if choice == "1":
+        category = "short"
+    elif choice == "2":
+        category = "long"
+    else:
+        category = "any"
+
+    amount = int(input("How many random facts would you like? "))
+
+    facts = get_random_facts(category, amount)
+
+    print("\nHere are your random facts:\n")
+    for num, fact in enumerate(facts, start=1):
+        print(f"{num}. {fact}\n")
+
+
+# Program start
+main()
